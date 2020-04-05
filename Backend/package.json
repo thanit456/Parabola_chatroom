@@ -1,0 +1,22 @@
+{
+  "name": "parabola-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thanit456/Parabola_chatroom.git"
+  },
+  "keywords": [
+    "chatroom"
+  ],
+  "author": "Parabola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thanit456/Parabola_chatroom/issues"
+  },
+  "homepage": "https://github.com/thanit456/Parabola_chatroom#readme"
+}
