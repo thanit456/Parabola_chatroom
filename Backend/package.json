@@ -1,10 +1,11 @@
 {
   "name": "parabola-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "backend subsystem for parabola chat room project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon",
+    "format": "eslint --fix \"**/*.ts\""
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,22 @@
   "bugs": {
     "url": "https://github.com/thanit456/Parabola_chatroom/issues"
   },
-  "homepage": "https://github.com/thanit456/Parabola_chatroom#readme"
+  "homepage": "https://github.com/thanit456/Parabola_chatroom#readme",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "bufferutil": "^4.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.7",
+    "socket.io": "^2.3.0",
+    "typescript": "^3.8.3",
+    "utf-8-validate": "^5.0.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "prettier": "^2.0.4"
+  }
 }
