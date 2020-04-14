@@ -1,13 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import io from 'socket.io';
 import passport from 'passport';
 import User from './models/user.model.js';
 import UserController from './controllers/user.controller.js';
+import ChatController from './controllers/chat.controller.js';
 import { asyncHandler } from './utils/handlers.js';
 import LocalStrategy from 'passport-local';
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import http from 'http';
+import socketio from 'socket.io';
 
 const port = 8080;
 
@@ -15,19 +17,16 @@ export default class ParabolaApp {
     
     constructor() {
         const app = express();
+        const httpServer = http.createServer(app);
         try{
             mongoose.connect('mongodb://mongo:27017/parabola', { useNewUrlParser: true });
         }catch(err){
             console.log('Connection to MongoDB Failed\n',err);
         }
         mongoose.connection.on('error', err => {
-            console.log(err);
+            cosole.log(err);
         });
 
-        //TODO: SOCKET IO
-        // io.on('connection', function(socket){
-        //     console.log('a user connected');
-        // });
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(
@@ -67,11 +66,11 @@ export default class ParabolaApp {
             )
         );
 
-
         app.get('/', (req, res) => {
-            res.send('Hello World!');
+            // res.send('Hello World!');
+            res.sendFile('/usr/src/app/src/test_socket/index.html');
         });
-        
+        //----------------- user routing -----------------    
         app.post('/login', passport.authenticate('local'), (req, res) => {
             res.json({ status: "success" });
         });
@@ -84,9 +83,34 @@ export default class ParabolaApp {
             await req.logout();
             res.json({ status: "success" });
         });
+        //////////////////////////////////////////////////
 
-        app.listen(port, () => {
+        //----------------- chat routing -----------------    
+        app.post('/createroom', UserController.ensureLoggedIn, ChatController.createChatRooom);
+        app.get('/join', UserController.ensureLoggedIn, ChatController.joinChatRoom);
+
+        //////////////////////////////////////////////////
+        
+        
+        httpServer.listen(port, () => {
             console.log('Parabola listening on port',port);
+        });
+
+        //TODO: SOCKET IO
+        const io = socketio(httpServer);
+        io.on('connection', function(socket){
+            console.log('a user connected');
+            //on `chat message` event
+            socket.on('chat message', function(msg){
+                console.log('message: ' + msg);
+
+                //Save message to MongoDB
+
+            });
+            //on client disconnect event
+            socket.on('disconnect', function(){
+                console.log('user disconnected');
+            });
         });
 
     }
