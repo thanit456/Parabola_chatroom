@@ -32,26 +32,6 @@ services:
     volumes:
       - './Backend:/usr/src/app'
     command: ["npm", "run", "dev"]  
-    ports:
-      - '3000:3000'
-  # backend1:
-  #   build: ./backend
-  #   tty: true
-  #   volumes:
-  #     - './backend/src:/backend-dir-inside-container'
-
-  # backend2:
-  #   build: ./backend
-  #   tty: true
-  #   volumes:
-  #     - './backend/src:/backend-dir-inside-container'
-
-  # backend3:
-  #   build: ./backend
-  #   tty: true
-  #   volumes:
-  #     - './backend/src:/backend-dir-inside-container'
-
 
   loadbalancer: 
     build: ./load-balancer
