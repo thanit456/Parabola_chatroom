@@ -12,5 +12,5 @@ RUN npm install
 #copy code into container
 COPY . .
 
-EXPOSE 3001
-CMD [ "npm", "start" ]
+EXPOSE 3000
+CMD [ "npm", "run", "start" ]

@@ -9,7 +9,7 @@ import LocalStrategy from 'passport-local';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 
-const port = 3000;
+const port = 3001;
 
 export default class ParabolaApp {
     
