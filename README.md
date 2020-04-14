@@ -6,6 +6,6 @@
 - Nginx
 
 ## Port Configuration: 
-- 3000 = Backend
-- 3001 = Frontend
+- 3000 = Frontend
+- 3001 = Backend
 - 8080 = Load Balancer
