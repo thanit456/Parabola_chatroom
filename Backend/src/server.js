@@ -1,7 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import io from 'socket.io';
+import passport from 'passport';
 import User from './models/user.model.js';
+import UserController from './controllers/user.controller.js';
+import { asyncHandler } from './utils/handlers.js';
+import LocalStrategy from 'passport-local';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+
 const port = 8080;
 
 export default class ParabolaApp {
@@ -21,6 +28,23 @@ export default class ParabolaApp {
         // io.on('connection', function(socket){
         //     console.log('a user connected');
         // });
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(
+            session({
+                secret: 'wanna lick some icecream',
+                resave: false,
+                saveUninitialized: false,
+            }),
+        );
+        passport.serializeUser(async (user, done) => {
+            return done(null, user.username);
+        });
+        passport.deserializeUser(async (username, done) => {
+            const user = await User.findOne({ username: username });
+            return done(null, user);
+        });
+
         app.use(passport.initialize());
         app.use(passport.session());
         passport.use(
@@ -29,12 +53,13 @@ export default class ParabolaApp {
                     usernameField: 'username',
                     passwordField: 'password',
                 },
-                (email, password, done) => {
-                    const user = await User.findOne({ username });
+                async (username, password, done) => {
+                    console.log(username, password);
+                    const user = await User.findOne({ username: username });
                     if(!user){
                         return done(null, false);
                     }
-                    else if (pasword !== user.password){
+                    else if (password !== user.password){
                         return done(null, false);
                     }
                     return done(null, user);
@@ -51,14 +76,13 @@ export default class ParabolaApp {
             res.json({ status: "success" });
         });
 
-        app.get('/profile',
-            passport.authenticate('basic', { session: false }),
-            function(req, res) {
-            res.json(req.user);
-        });
+        app.get('/whoami', UserController.ensureLoggedIn,UserController.whoami);
 
-        app.get('/logout', (req, res) => {
-            req.json({ status: "success" });
+        app.post('/register', asyncHandler(UserController.createUser));
+
+        app.get('/logout', async (req, res) => {
+            await req.logout();
+            res.json({ status: "success" });
         });
 
         app.listen(port, () => {
