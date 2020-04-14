@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import RubberBand from 'react-reveal/RubberBand';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -120,7 +121,16 @@ export default () => {
                 />
             </form>
             <div className="button">
-                <Link className="login-btn" to="/group">Sign in</Link>
+                <Link className="login-btn" onClick={()=>{
+                    let payload={
+                        "username" : userName,
+                        "password" : userPassword
+                    }
+                    axios.post("http://localhost:8080/login",payload).then(res => {
+                        console.log(res)
+                        window.location.assign('/group')
+                    })
+                }} >Sign in</Link>
             </div>
             <div className="register-text">
                 <p>Not a member yet?</p>

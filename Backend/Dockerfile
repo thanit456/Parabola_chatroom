@@ -1,5 +1,7 @@
 FROM node:latest
 
+RUN npm install -g nodemon
+
 # Create app directory
 WORKDIR /usr/src/app
 

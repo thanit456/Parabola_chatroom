@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tada from 'react-reveal/Tada';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,6 +79,17 @@ export default () => {
     const onClickRegister = () => {
         if (password === passwordAgain) {
             setPassword(password);
+            //register pass
+            let payload = {
+                "username" : username,
+                "password" : password,
+                "userImage" : userImage
+            }
+            axios.post("http://localhost:8080/register",payload).then(res => {
+                        console.log(res)
+                        //check res logic                    
+                        window.location.assign('/')
+                    })
         } else {
             alert('Please fill your password correctly');
         }
@@ -142,7 +154,7 @@ export default () => {
                 />
             </form>
             <div className="button">
-                <Link onClick={onClickRegister} className="register-btn" to="/group">Sign up</Link>
+                <Link onClick={onClickRegister} className="register-btn" >Sign up</Link>
             </div>
             <div className="register-text">
                 <p>Already be a member?</p>

@@ -8,6 +8,7 @@ import { asyncHandler } from './utils/handlers.js';
 import LocalStrategy from 'passport-local';
 import bodyParser from 'body-parser';
 import session from 'express-session';
+import cors from 'cors';
 
 const port = 3001;
 
@@ -37,6 +38,7 @@ export default class ParabolaApp {
                 saveUninitialized: false,
             }),
         );
+        app.use(cors())
         passport.serializeUser(async (user, done) => {
             return done(null, user.username);
         });
