@@ -98,7 +98,7 @@ export default (props) => {
                     <TextField
                         fullWidth
                         id="standard"
-                        label="Cover Image"
+                        label="Cover Image Url"
                         InputProps={{
                             className: classes.input
                         }}

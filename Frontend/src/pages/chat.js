@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ArrowBackIosRounded, CallRounded } from '@material-ui/icons';
+import { SendRounded, ImageOutlined, LocationOnOutlined, ArrowBackIosRounded, CallRounded } from '@material-ui/icons';
 
 const Chat = styled.div`
     padding: 0 32px;
@@ -34,8 +34,17 @@ const Message = styled.div`
         width: 60px;
         border-radius: 60px;
     }
-    .message {
+    .message-body {
         margin: 0 16px;
+    }
+    .username {
+        margin-bottom: 8px;
+        color: #fff9;
+    }
+    .my-username {
+        text-align: right;
+    }
+    .message {
         padding: 16px 24px;
         max-width: 250px;
         background: linear-gradient(135deg, rgba(227,50,81,1) 35%, rgba(245,88,105,1) 100%);
@@ -44,12 +53,12 @@ const Message = styled.div`
     .my-message {
         background: none;
         border-radius: 24px 24px 0 24px;
-        box-shadow: 7px 7px 21px #131317, 
-        -7px -7px 21px #31313d;
+        box-shadow: 5px 5px 10px #19191f, 
+        -5px -5px 10px #2b2b35;
     }
     .message-time {
         font-weight: 500;
-        color: #cfcfcf;
+        color: #ffffff42;
         margin-right: auto;
     }
     .my-message-time {
@@ -58,26 +67,57 @@ const Message = styled.div`
     }
 `
 
-const MessageCard = ({ userImage, message, messageTime, isMyMessage }) => {
+const ChatText = styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: -32px;
+    margin-right: -32px;
+    padding: 16px 32px;
+    border-top: solid 1px #ffffff2b;
+    position: absolute;
+    bottom: 0;
+    z-index: 99;
+    input {
+        width: 100%;
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: 18px;
+        padding: 16px 6px;
+        color: #fff;
+    }
+    svg {
+        font-size: 2rem;
+        margin-left: 16px;
+    }
+    .send-btn {
+        background: linear-gradient(135deg, rgba(227,50,81,1) 35%, rgba(245,88,105,1) 100%);
+        border-radius: 25px;
+        padding: 12px 16px;
+        padding-left: 20px;
+        margin-left: 24px;
+        font-size: 1.8rem;
+    }
+`
+
+const MessageCard = ({ userImage, username, message, messageTime, isMyMessage }) => {
     return (
         <>
             {(!isMyMessage) ?
                 <Message>
                     <img className="image" src={userImage} alt="User" />
-                    <div className="message">
-                        {message}
+                    <div className="message-body">
+                        <div className="username">{username}</div>
+                        <div className="message">{message}</div>
                     </div>
-                    <div className="message-time">
-                        {messageTime}
-                    </div>
+                    <div className="message-time">{messageTime}</div>
                 </Message>
                 :
                 <Message>
-                    <div className="message-time my-message-time">
-                        {messageTime}
-                    </div>
-                    <div className="message my-message">
-                        {message}
+                    <div className="message-time my-message-time">{messageTime}</div>
+                    <div className="message-body">
+                        <div className="my-username username">{username}</div>
+                        <div className="message my-message">{message}</div>
                     </div>
                     <img className="image my-image" src={userImage} alt="User" />
                 </Message>
@@ -87,6 +127,8 @@ const MessageCard = ({ userImage, message, messageTime, isMyMessage }) => {
 }
 
 export default () => {
+    const [chatText, setChatText] = useState('')
+
     return (
         <Chat>
             <Navbar>
@@ -99,6 +141,7 @@ export default () => {
             <br /><br />
             <MessageCard
                 userImage={'/man.png'}
+                username={'Daidew'}
                 message={'Hi, John Doe'}
                 messageTime={'12.15'}
                 isMyMessage={false}
@@ -106,11 +149,31 @@ export default () => {
 
             <MessageCard
                 userImage={'/dummy.jpg'}
+                username={'Bankbiz'}
                 message={'Hi, Bruno Mars'}
                 messageTime={'14.15'}
                 isMyMessage={true}
             />
 
+            <MessageCard
+                userImage={'/dummy.jpg'}
+                username={'Nai_Two'}
+                message={'Hi, John Doe'}
+                messageTime={'12.25'}
+                isMyMessage={false}
+            />
+
+            <ChatText>
+                <input
+                    type="text"
+                    value={chatText}
+                    onChange={e => setChatText(e.target.value)}
+                    placeholder='Type your message'
+                />
+                <ImageOutlined style={{ color: '#ffffff82' }} />
+                <LocationOnOutlined style={{ color: '#ffffff82' }} />
+                <SendRounded className="send-btn" />
+            </ChatText>
         </Chat>
     )
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import RubberBand from 'react-reveal/RubberBand';
+import Tada from 'react-reveal/Tada';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,38 +29,25 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const Login = styled.div`
+const Register = styled.div`
     padding: 0 32px;
     color: #fff;
-    .title {
-        font-family: 'Baloo Paaji 2', cursive;
-        font-size: 48px;
-        font-weight: 500;
-        padding-top: 32px;
-        background: linear-gradient(to right, #E43350 , #F45769);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0;
-    }
-    p {
-        margin-top: 0;
-        color: #A9A9B5;
+    h1 {
+        color: #F55869;
     }
     .background {
-        width: 300px;
-        margin-left: auto;
+        text-align: right;
     }
     form {
-        margin-top: 72px;
         margin-bottom: 56px;
     }
-    .login-btn {
+    .register-btn {
         text-decoration: none;
         background-color: #22222a;
         box-shadow: 5px 5px 10px #19191f, 
         -5px -5px 10px #2b2b35;
         color: #bababa;
-        padding: 16px 190px;
+        padding: 16px 186px;
         border-radius: 50px;
     }
     .copyright {
@@ -72,6 +59,7 @@ const Login = styled.div`
     .register-text {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin-top: 48px;
     }
     .register-text a {
@@ -81,21 +69,33 @@ const Login = styled.div`
 `
 
 export default () => {
-    const [userName, setUserName] = useState(''); //TO DO
-    const [userPassword, setUserPassword] = useState(''); //TO DO
+    const [username, setUsername] = useState(''); //TO DO
+    const [userImage, setUserImage] = useState(''); //TO DO
+    const [password, setPassword] = useState(''); //TO DO
+
+    const [passwordAgain, setPasswordAgain] = useState('');
+
+    const onClickRegister = () => {
+        if (password === passwordAgain) {
+            setPassword(password);
+        } else {
+            alert('Please fill your password correctly');
+        }
+    }
 
     const classes = useStyles();
 
     return (
-        <Login>
-            <h1 className="title">Parabola</h1>
-            <p>chat application</p>
+        <Register>
+            <br />
+            <h1 className="title">Register</h1>
+            <p>please fill form correctly</p>
             <div className="background">
-                <RubberBand>
-                    <img src="/bg-login.svg" alt="Login" />
-                </RubberBand>
+                <Tada>
+                    <img width="60%" src="/bg-signup.svg" alt="Sign up" />
+                </Tada>
             </div>
-
+            <br /><br />
             <form className={classes.root} noValidate autoComplete="off">
                 <TextField
                     fullWidth
@@ -104,8 +104,19 @@ export default () => {
                     InputProps={{
                         className: classes.input
                     }}
-                    value={userName}
-                    onChange={e => setUserName(e.target.value)}
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                />
+                <br /><br /><br />
+                <TextField
+                    fullWidth
+                    id="standard"
+                    label="Profile Image Url"
+                    InputProps={{
+                        className: classes.input
+                    }}
+                    value={userImage}
+                    onChange={e => setUserImage(e.target.value)}
                 />
                 <br /><br /><br />
                 <TextField
@@ -115,18 +126,29 @@ export default () => {
                     InputProps={{
                         className: classes.input
                     }}
-                    value={userPassword}
-                    onChange={e => setUserPassword(e.target.value)}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <br /><br /><br />
+                <TextField
+                    fullWidth
+                    id="standard"
+                    label="Fill password again"
+                    InputProps={{
+                        className: classes.input
+                    }}
+                    value={passwordAgain}
+                    onChange={e => setPasswordAgain(e.target.value)}
                 />
             </form>
             <div className="button">
-                <Link className="login-btn" to="/group">Sign in</Link>
+                <Link onClick={onClickRegister} className="register-btn" to="/group">Sign up</Link>
             </div>
             <div className="register-text">
-                <p>Not a member yet?</p>
-                <Link to="/register">Sign up</Link>
+                <p>Already be a member?</p>
+                <Link to="/">Sign in</Link>
             </div>
             <p className="copyright">© Parabola Inc.</p>
-        </Login>
+        </Register>
     )
 }
