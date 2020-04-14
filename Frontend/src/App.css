@@ -1,0 +1,16 @@
+.App {
+    background-color: #22222A;
+    width: 500px;
+    margin: auto;
+    padding: 8px 0;
+    height: 100vh;
+    color: #fff;
+}
+
+img {
+    max-width: 100%;
+}
+
+*:focus {
+    outline: none;
+}
