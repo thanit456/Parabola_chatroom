@@ -1,0 +1,58 @@
+version: '3.2'
+services:
+  
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
+  frontend:
+    build: ./Frontend
+    tty: true
+    volumes:
+      - './Frontend:/usr/src/app'
+    links:
+      - loadbalancer
+    command: ["npm", "run", "start"]
+    ports:
+      - '3000:3000'
+
+  backend1:
+    build: ./Backend
+    tty: true
+    depends_on:
+      - mongo
+    volumes:
+      - './Backend:/usr/src/app'
+    command: ["npm", "run", "dev"]
+
+  backend2:
+    build: ./Backend
+    tty: true
+    depends_on:
+      - mongo
+    volumes:
+      - './Backend:/usr/src/app'
+    command: ["npm", "run", "dev"]
+  
+  backend3:
+    build: ./Backend
+    tty: true
+    depends_on:
+      - mongo
+    volumes:
+      - './Backend:/usr/src/app'
+    command: ["npm", "run", "dev"]  
+
+  loadbalancer: 
+    build: ./load-balancer
+    tty: true
+    links:
+      - backend1
+      - backend2
+      - backend3
+    ports: 
+      - '8080:8080'
+
+volumes: 
+  backend:

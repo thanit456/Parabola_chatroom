@@ -10,8 +10,10 @@ import bodyParser from 'body-parser';
 import session from 'express-session';
 import http from 'http';
 import socketio from 'socket.io';
+import cors from 'cors';
 
 const port = 3001;
+
 export const app = express();
 export const httpServer = http.createServer(app);
 export const io = socketio(httpServer);
@@ -38,6 +40,7 @@ export default class ParabolaApp {
                 saveUninitialized: false,
             }),
         );
+        app.use(cors())
         passport.serializeUser(async (user, done) => {
             return done(null, user.username);
         });
