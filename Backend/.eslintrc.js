@@ -1,23 +1,15 @@
-module.exports = {
-  'env': {
-    'browser': true,
-    'es6': true,
-  },
-  'extends': [
-    'google',
+module.exports =  {
+  parser:  '@typescript-eslint/parser',  // Specifies the ESLint parser
+  extends:  [
+    'plugin:@typescript-eslint/recommended',  // Uses the recommended rules from the @typescript-eslint/eslint-plugin
   ],
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly',
+ parserOptions:  {
+    ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
+    sourceType:  'module',  // Allows for the use of imports
   },
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
-    'ecmaVersion': 2018,
-    'sourceType': 'module',
-  },
-  'plugins': [
-    '@typescript-eslint',
-  ],
-  'rules': {
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/interface-name-prefix": "off"
   },
 };
