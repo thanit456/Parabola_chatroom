@@ -7,11 +7,18 @@ import ChatController from './controllers/chat.controller.js';
 import { asyncHandler } from './utils/handlers.js';
 import LocalStrategy from 'passport-local';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import http from 'http';
 import socketio from 'socket.io';
 import cors from 'cors';
+import { default as connectMongoDBSession} from 'connect-mongodb-session';
 
+const MongoDBStore = connectMongoDBSession(session);
+const store = new MongoDBStore({
+  uri: 'mongodb://mongo:27017/parabola',
+  collection: 'sessions'
+});
 const port = 3001;
 
 export const app = express();
@@ -30,12 +37,17 @@ export default class ParabolaApp {
         mongoose.connection.on('error', err => {
             cosole.log(err);
         });
-
+        app.enable('trust proxy');
         app.use(bodyParser.json());
+        app.use(cookieParser());
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(
             session({
                 secret: 'wanna lick some icecream',
+                proxy: true,
+                cookie: { secure: false },
+                //NEVER use in-memory store for production - I'm using mongoose/mongodb here
+                store: store,
                 resave: false,
                 saveUninitialized: false,
             }),
