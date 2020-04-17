@@ -126,8 +126,8 @@ export default () => {
                         "username" : userName,
                         "password" : userPassword
                     }
-                    axios.post(endpoint+"/login",payload).then(res => {
-                        console.log(res)
+                    axios.post(endpoint+"/login",payload,{withCredentials: true}).then(res => {
+                        console.log(res.headers)
                         window.location.assign('/group')
                     })
                 }} >Sign in</Link>
