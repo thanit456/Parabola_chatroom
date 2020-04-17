@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ExitToAppRounded, PlaylistAddRounded, SearchRounded } from '@material-ui/icons';
 import CreateGroup from '../features/createGroup';
+import axios from 'axios';
 
 const Group = styled.div`
     padding: 0 32px;
@@ -101,8 +102,16 @@ const GroupCard = ({ groupImage, groupName, lastMessage, lastMessageTime }) => {
 }
 
 export default () => {
+    const endpoint = "http://localhost:8080";
+    const [rooms,setRooms] = useState([]);
     const [isOpenCreateGroup, setIsOpenCreateGroup] = useState(false);
-
+    axios.get(endpoint+"/whoami").then(res => {
+        console.log(res)
+    })
+    // axios.get(endpoint+"/getallroom", { data: { user :  } }).then(res => {
+    //     console.log(res)
+    //     setRooms(res.data)
+    // })
     return (
         <Group>
             <Navbar>
