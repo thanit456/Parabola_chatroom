@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { SendRounded, ImageOutlined, LocationOnOutlined, ArrowBackIosRounded, CallRounded } from '@material-ui/icons';
+// import socketIOClient from 'socket.io-client';
+// import axios from 'axios';
 
 const Chat = styled.div`
     padding: 0 32px;
@@ -23,6 +25,7 @@ const Navbar = styled.div`
         box-shadow: 5px 5px 10px #19191f, 
         -5px -5px 10px #2b2b35;
         font-size: 2rem;
+        cursor : pointer;
     }
 `
 
@@ -128,11 +131,18 @@ const MessageCard = ({ userImage, username, message, messageTime, isMyMessage })
 
 export default () => {
     const [chatText, setChatText] = useState('')
-
+    // const endpoint = "http://localhost:8080";
+    // const [messages, setMessages] = useState([])
+    // const [user, setUser] = useState('')
     return (
         <Chat>
             <Navbar>
-                <ArrowBackIosRounded />
+                <ArrowBackIosRounded onClick={() => {
+                    //close socket
+
+                    //back to group
+                    window.location.assign("/group")
+                }} />
                 <div className="menu-text">
                     Starlink Con.
                 </div>

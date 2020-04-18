@@ -37,6 +37,7 @@ const Navbar = styled.div`
     .menu-text {
         font-size: 18px;
         font-weight: 500;
+        cursor: pointer;
     }
     svg {
         background: linear-gradient(145deg, #24242d, #1f1f26);
@@ -48,10 +49,10 @@ const Navbar = styled.div`
         cursor: pointer;
     }
 `
-
 const EachGroup = styled.div`
     display: flex;
     align-items: center;
+    border-bottom: 3px solid #333;
     width: 100%;
     padding: 24px 0 8px 0;
     .group-image img {
@@ -124,11 +125,11 @@ export default () => {
                 <div className="menu-text">
                     Groups
                 </div>
-                <Link onClick={ () => {
-                    axios.get(endpoint+"/logout",{ withCredentials: true }).then(res => {
+                <Link onClick={() => {
+                    axios.get(endpoint + "/logout", { withCredentials: true }).then(res => {
                         window.location.assign('/')
                     })
-                    
+
                 }}>
                     <ExitToAppRounded />
                 </Link>
@@ -142,7 +143,7 @@ export default () => {
                 : null
             }
             {rooms.map(room => {
-                return <Link style={{ "text-decoration" : 'none'}} onClick={() => { window.location.assign('/chat') } } ><GroupCard
+                return <Link style={{ "text-decoration": 'none' }} onClick={() => { window.location.assign('/chat') } } ><GroupCard
                     groupImage={'/man.png'}
                     groupName={room.roomname}
                     lastMessage={''}

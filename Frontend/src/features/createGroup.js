@@ -56,6 +56,7 @@ const Popup = styled.div`
         color: #bababa;
         padding: 16px 136px;
         border-radius: 50px;
+        cursor : pointer;
     }
 `
 
