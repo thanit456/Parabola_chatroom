@@ -20,6 +20,7 @@ const store = new MongoDBStore({
 	collection: 'sessions'
 });
 const port = 3001;
+const DB_URI='mongodb+srv://dev:cp44parabola@parabola-cluster-ca7zo.mongodb.net/test?retryWrites=true&w=majority';
 
 export const app = express();
 export const httpServer = http.createServer(app);
@@ -30,10 +31,16 @@ export default class ParabolaApp {
 	constructor() {
         
 		try{
-			mongoose.connect('mongodb://mongo:27017/parabola', { useNewUrlParser: true });
+			mongoose.connect(DB_URI || 'mongodb://mongo:27017/parabola', 
+				{ useNewUrlParser: true, useUnifiedTopology: true }, 
+				err => {
+					if(err) console.log('MongoDB Error');
+				}
+			);
 		}catch(err){
 			console.log('Connection to MongoDB Failed\n',err);
 		}
+		mongoose.set('useCreateIndex', true);
 		mongoose.connection.on('error', err => {
 			console.log(err);
 		});
@@ -107,6 +114,7 @@ export default class ParabolaApp {
         
 		httpServer.listen(port, () => {
 			console.log('Parabola listening on port',port);
+			
 		});
 
 		io.on('connection', (socket) => {
