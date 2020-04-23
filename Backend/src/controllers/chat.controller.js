@@ -12,11 +12,11 @@ export default class ChatController {
 			//roomname is null or undefined
 			throw new HttpErrors.BadRequest('Roomname is null or undefined');
 		}
-		const new_room = new ChatRoom({
+		const room = new ChatRoom({
 			roomname: req.body.roomname,
 			createTime: new Date()
 		});
-		await new_room.save();
+		await room.save();
 		// User.findByIdAndUpdate(req.user._id, {
 		// 	$addToSet: { chatRooms: new_room._id }
 		// })

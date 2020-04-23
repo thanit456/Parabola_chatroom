@@ -10,12 +10,12 @@ export default class UserController {
 			throw new HttpErrors.BadRequest();
 		}
 		else{
-			const new_user = new User({
+			const user = new User({
 				username: req.body.username,
 				password: req.body.password,
 				createTime: new Date()
 			});
-			await new_user.save();
+			await user.save();
 			res.json({ status: 'success' });
 		}
 	}
