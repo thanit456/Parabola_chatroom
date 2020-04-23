@@ -84,7 +84,7 @@ const Login = styled.div`
 export default () => {
     const [userName, setUserName] = useState(''); //TO DO
     const [userPassword, setUserPassword] = useState(''); //TO DO
-
+    const endpoint = "http://localhost:8080";
     const classes = useStyles();
 
     return (
@@ -126,8 +126,8 @@ export default () => {
                         "username" : userName,
                         "password" : userPassword
                     }
-                    axios.post("http://localhost:8080/login",payload).then(res => {
-                        console.log(res)
+                    axios.post(endpoint+"/login",payload,{withCredentials: true}).then(res => {
+                        console.log(res.headers)
                         window.location.assign('/group')
                     })
                 }} >Sign in</Link>

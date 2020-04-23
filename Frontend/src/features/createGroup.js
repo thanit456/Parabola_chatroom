@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Pulse from 'react-reveal/Pulse';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,13 +56,14 @@ const Popup = styled.div`
         color: #bababa;
         padding: 16px 136px;
         border-radius: 50px;
+        cursor : pointer;
     }
 `
 
 export default (props) => {
     const [groupName, setGroupName] = useState(''); //TO DO
     const [groupImage, setGroupImage] = useState(''); //TO DO
-
+    const endpoint = "http://localhost:8080";
     const classes = useStyles();
     const PopupRef = useRef(null);
 
@@ -107,7 +109,17 @@ export default (props) => {
                     />
                 </form>
                 <div
-                    onClick={() => props.setIsOpenCreateGroup(false)}
+                    onClick={() => {
+                        let payload = {
+                            "roomname" : groupName,
+                            "roomimage" : groupImage
+                        }
+                        axios.post(endpoint+"/createroom",payload,{withCredentials: true}).then(res => {
+                            console.log(res)
+                        })
+                        props.setIsOpenCreateGroup(false)
+                        window.location.assign('/group')
+                    }}
                     className="btn-create-group"
                 >
                     Create Group

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ExitToAppRounded, PlaylistAddRounded, SearchRounded } from '@material-ui/icons';
 import CreateGroup from '../features/createGroup';
+import axios from 'axios';
 
 const Group = styled.div`
     padding: 0 32px;
@@ -36,6 +37,7 @@ const Navbar = styled.div`
     .menu-text {
         font-size: 18px;
         font-weight: 500;
+        cursor: pointer;
     }
     svg {
         background: linear-gradient(145deg, #24242d, #1f1f26);
@@ -44,12 +46,13 @@ const Navbar = styled.div`
         box-shadow: 5px 5px 10px #19191f, 
         -5px -5px 10px #2b2b35;
         font-size: 2rem;
+        cursor: pointer;
     }
 `
-
 const EachGroup = styled.div`
     display: flex;
     align-items: center;
+    border-bottom: 3px solid #333;
     width: 100%;
     padding: 24px 0 8px 0;
     .group-image img {
@@ -60,6 +63,7 @@ const EachGroup = styled.div`
         font-size: 20px;
         font-weight: 500;
         margin-bottom: 8px;
+        color : #fff;
     }
     .message {
         color: #cecece;
@@ -101,8 +105,19 @@ const GroupCard = ({ groupImage, groupName, lastMessage, lastMessageTime }) => {
 }
 
 export default () => {
+    const endpoint = "http://localhost:8080";
+    const [rooms, setRooms] = useState([]);
     const [isOpenCreateGroup, setIsOpenCreateGroup] = useState(false);
+    useEffect(() => axios.get(endpoint + "/getallroom", { withCredentials: true }).then(res => {
+        console.log("res from all room >> ")
+        setRooms(res.data)
+        console.log(res)
+    }), []);
 
+    // axios.get(endpoint+"/getallroom", { data: { user :  } }).then(res => {
+    //     console.log(res)
+    //     setRooms(res.data)
+    // })
     return (
         <Group>
             <Navbar>
@@ -110,7 +125,12 @@ export default () => {
                 <div className="menu-text">
                     Groups
                 </div>
-                <Link to="/">
+                <Link onClick={() => {
+                    axios.get(endpoint + "/logout", { withCredentials: true }).then(res => {
+                        window.location.assign('/')
+                    })
+
+                }}>
                     <ExitToAppRounded />
                 </Link>
             </Navbar>
@@ -122,25 +142,14 @@ export default () => {
                 />
                 : null
             }
-
-            <GroupCard
-                groupImage={'/man.png'}
-                groupName={'Starlink Con.'}
-                lastMessage={'Hi, Can you say something...'}
-                lastMessageTime={'12.15'}
-            />
-            <GroupCard
-                groupImage={'/man.png'}
-                groupName={'Starlink Con.'}
-                lastMessage={'Hi, Can you say something...'}
-                lastMessageTime={'12.15'}
-            />
-            <GroupCard
-                groupImage={'/man.png'}
-                groupName={'Starlink Con.'}
-                lastMessage={'Hi, Can you say something...'}
-                lastMessageTime={'12.15'}
-            />
+            {rooms.map(room => {
+                return <Link style={{ "text-decoration": 'none' }} onClick={() => { window.location.assign('/chat') } } ><GroupCard
+                    groupImage={'/man.png'}
+                    groupName={room.roomname}
+                    lastMessage={''}
+                    lastMessageTime={''}
+                /></Link>
+            })}
 
             <SearchRounded style={{ color: '#F45567' }} className='icon-search' />
         </Group>
