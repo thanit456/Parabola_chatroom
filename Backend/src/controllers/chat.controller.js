@@ -17,6 +17,9 @@ export default class ChatController {
 			createTime: new Date()
 		});
 		await new_room.save();
+		// User.findByIdAndUpdate(req.user._id, {
+		// 	$addToSet: { chatRooms: new_room._id }
+		// })
 		res.json({ status: 'success' });
 	}
 
