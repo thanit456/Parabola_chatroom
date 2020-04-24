@@ -14,12 +14,20 @@ export default class ChatController {
 		}
 		const room = new ChatRoom({
 			roomname: req.body.roomname,
+			participants: [{
+				userid: req.user._id,
+				nickname: ''
+			}],
 			createTime: new Date()
 		});
 		await room.save();
-		// User.findByIdAndUpdate(req.user._id, {
-		// 	$addToSet: { chatRooms: new_room._id }
-		// })
+		User.findByIdAndUpdate(req.user._id, {
+			$addToSet: { 
+				chatRooms: {
+					id: room._id,
+				}
+			}
+		});
 		res.json({ status: 'success' });
 	}
 

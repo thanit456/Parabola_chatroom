@@ -1,10 +1,17 @@
 import mongoose from 'mongoose';
-const { Schema, Document } = mongoose; 
-import ChatMessage from './chatmessage.model.js';
+const { Schema, ObjectId } = mongoose;
 
 const ChatRoomSchema = new Schema({
 	roomname: { type: String, required: [true, 'roomname cannot be blank'] },
-	// participants: [{ type: Schema.Types.ObjectId, required: [true, 'participant userId required'], unique: true }],
+	participants: [{
+		userid: { 
+			type: ObjectId, 
+			ref: 'User', 
+			required: [true, 'participant userId required'], 
+			unique: true 
+		},
+		nickname: { type: String }
+	}],
 	createTime: { type: Date, required: [true, 'required'] },
 });
 

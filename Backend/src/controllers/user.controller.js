@@ -1,5 +1,4 @@
 import HttpErrors from 'http-errors';
-import Types from 'mongoose';
 import User from '../models/user.model.js';
 
 export default class UserController {
