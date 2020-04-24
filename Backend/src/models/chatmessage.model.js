@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const { Schema, Document } = mongoose; 
+const { Schema } = mongoose; 
 
 const ChatMessageSchema = new Schema({
 	chatroomId: { type: Schema.Types.ObjectId, required: [true, 'roomId required'] },
