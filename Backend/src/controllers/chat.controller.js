@@ -29,14 +29,15 @@ export default class ChatController {
 
 	static async joinChatRoom(userId, roomId){
 		const chatroom = await ChatRoom.findById(roomId);
-		if(!chatroom){
-			throw new HttpErrors.NotFound('Chatroom does not exist');
-		}
+		if(!chatroom) throw new HttpErrors.NotFound('Chatroom does not exist');
+
 		const user = await User.findById(userId);
-		if(!user){
-			throw new HttpErrors.Unauthorized('User does not exist.');
-		}
+		if(!user) throw new HttpErrors.Unauthorized('User does not exist.');
+
 		console.log('wants to join room:',chatroom.roomname);
+
+		ChatRoom.findByIdAndUpdate(roomId,  { $push: { participants: { userid: user._id, nickname:'' } } });
+
 		const messages = await ChatController.getAllMessageFromChatRoom(roomId);
 		return messages;
 	}
