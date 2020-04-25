@@ -6,9 +6,7 @@ const ChatRoomSchema = new Schema({
 	participants: [{
 		userid: { 
 			type: ObjectId, 
-			ref: 'User', 
-			required: [true, 'participant userId required'], 
-			unique: true 
+			ref: 'User'
 		},
 		nickname: { type: String }
 	}],
