@@ -12,6 +12,7 @@ export default class UserController {
 			const user = new User({
 				username: req.body.username,
 				password: req.body.password,
+				chatRooms: [],
 				createTime: new Date()
 			});
 			await user.save();
