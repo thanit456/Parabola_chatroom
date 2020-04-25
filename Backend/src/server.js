@@ -39,6 +39,7 @@ export default class ParabolaApp {
 			console.log('Connection to MongoDB Failed\n',err);
 		}
 		mongoose.set('useCreateIndex', true);
+		mongoose.set('useFindAndModify', false);
 		mongoose.connection.on('error', err => {
 			console.log(err);
 		});
