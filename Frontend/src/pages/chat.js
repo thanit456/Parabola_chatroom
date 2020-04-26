@@ -2,6 +2,8 @@ import React, { useState, useQueryParam, StringParam, useEffect } from 'react';
 import styled from 'styled-components';
 import { SendRounded, ImageOutlined, LocationOnOutlined, ArrowBackIosRounded, CallRounded } from '@material-ui/icons';
 import axios from 'axios';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 
 const io = require('socket.io-client');
 const socket = io('http://localhost:8080', { transports: ['websocket'] });
@@ -9,6 +11,9 @@ const socket = io('http://localhost:8080', { transports: ['websocket'] });
 
 const Chat = styled.div`
     padding: 0 32px;
+    .simplebar-track {
+        margin-right: -26px;
+    }
 `
 
 const Navbar = styled.div`
@@ -138,20 +143,20 @@ export default ({ match }) => {
     const [messages, setMessages] = useState([])
     const endpoint = "http://localhost:8080";
     const [user, setUser] = useState('')
-    const [roomname,setRoomname] = useState('')
+    const [roomname, setRoomname] = useState('')
 
     useEffect(() => {
         // console.log(match.params.id)
         axios.get(endpoint + '/getallroom', { withCredentials: true }).then(res => {
             //console.log(res.data)
             res.data.map(item => {
-                if(item._id === match.params.id) {
+                if (item._id === match.params.id) {
                     setRoomname(item.roomname)
                 }
             })
         })
 
-    },[]);
+    }, []);
 
 
     useEffect(() => {
@@ -189,15 +194,17 @@ export default ({ match }) => {
                 <CallRounded />
             </Navbar>
             <br /><br />
-            { messages.map(message => {
-                return <MessageCard
-                    userImage={'/man.png'}
-                    username={message.username}
-                    message={message.message}
-                    messageTime={'12.15'}
-                    isMyMessage={message.userId === user}
-                />
-            })}
+            <SimpleBar style={{ maxHeight: 725 }}>
+                {messages.map(message => {
+                    return <MessageCard
+                        userImage={'/man.png'}
+                        username={message.username}
+                        message={message.message}
+                        messageTime={'12.15'}
+                        isMyMessage={message.userId === user}
+                    />
+                })}
+            </SimpleBar>
 
             <ChatText>
                 <input

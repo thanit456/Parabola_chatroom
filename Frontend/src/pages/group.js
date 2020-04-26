@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { ExitToAppRounded, PlaylistAddRounded, SearchRounded } from '@material-ui/icons';
 import CreateGroup from '../features/createGroup';
 import axios from 'axios';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 
 const Group = styled.div`
     padding: 0 32px;
@@ -142,14 +144,17 @@ export default () => {
                 />
                 : null
             }
-            {rooms.map(room => {
-                return <Link style={{ "text-decoration": 'none' }} onClick={() => { window.location.assign(`/chat/${room._id}`) } } ><GroupCard
-                    groupImage={'/man.png'}
-                    groupName={room.roomname}
-                    lastMessage={''}
-                    lastMessageTime={''}
-                /></Link>
-            })}
+
+            <SimpleBar style={{ maxHeight: 800 }}>
+                {rooms.map(room => {
+                    return <Link style={{ "text-decoration": 'none' }} onClick={() => { window.location.assign(`/chat/${room._id}`) }} ><GroupCard
+                        groupImage={'/man.png'}
+                        groupName={room.roomname}
+                        lastMessage={''}
+                        lastMessageTime={''}
+                    /></Link>
+                })}
+            </SimpleBar>
 
             <SearchRounded style={{ color: '#F45567' }} className='icon-search' />
         </Group>
