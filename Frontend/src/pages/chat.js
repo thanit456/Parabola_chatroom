@@ -138,6 +138,22 @@ export default ({ match }) => {
     const [messages, setMessages] = useState([])
     const endpoint = "http://localhost:8080";
     const [user, setUser] = useState('')
+    const [roomname,setRoomname] = useState('')
+
+    useEffect(() => {
+        // console.log(match.params.id)
+        axios.get(endpoint + '/getallroom', { withCredentials: true }).then(res => {
+            //console.log(res.data)
+            res.data.map(item => {
+                if(item._id === match.params.id) {
+                    setRoomname(item.roomname)
+                }
+            })
+        })
+
+    },[]);
+
+
     useEffect(() => {
         // console.log(match.params.id)
         axios.get(endpoint + '/whoami', { withCredentials: true }).then(res => {
@@ -168,7 +184,7 @@ export default ({ match }) => {
                     window.location.assign("/group")
                 }} />
                 <div className="menu-text">
-                    Starlink Con.
+                    {roomname}
                 </div>
                 <CallRounded />
             </Navbar>
