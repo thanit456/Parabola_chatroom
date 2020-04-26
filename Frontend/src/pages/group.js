@@ -109,9 +109,9 @@ export default () => {
     const [rooms, setRooms] = useState([]);
     const [isOpenCreateGroup, setIsOpenCreateGroup] = useState(false);
     useEffect(() => axios.get(endpoint + "/getallroom", { withCredentials: true }).then(res => {
-        console.log("res from all room >> ")
+        //console.log("res from all room >> ")
         setRooms(res.data)
-        console.log(res)
+        //console.log(res)
     }), []);
 
     // axios.get(endpoint+"/getallroom", { data: { user :  } }).then(res => {
@@ -143,7 +143,7 @@ export default () => {
                 : null
             }
             {rooms.map(room => {
-                return <Link style={{ "text-decoration": 'none' }} onClick={() => { window.location.assign('/chat') } } ><GroupCard
+                return <Link style={{ "text-decoration": 'none' }} onClick={() => { window.location.assign(`/chat/${room._id}`) } } ><GroupCard
                     groupImage={'/man.png'}
                     groupName={room.roomname}
                     lastMessage={''}

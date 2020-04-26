@@ -123,7 +123,8 @@ export default class ParabolaApp {
 			//on `join room` event
 			socket.on('join room', (data) => {
 				try {
-					data = JSON.parse(data);
+					console.log(data)
+					// data = JSON.parse(data);
 					console.log('join room request from', data.userId, 'to room', data.roomId);
 					ChatController.joinChatRoom(data.userId, data.roomId).then((messages) => {
 						socket.emit('previous message', messages);
@@ -160,7 +161,7 @@ export default class ParabolaApp {
 				//record time at which a message arrived at the server
 				const timestamp = new Date();
 				try {
-					data = JSON.parse(data);
+					// data = JSON.parse(data);
 					console.log('recv:', data.roomId, data.userId, data.message);
 					socket.to(data.roomId).emit('chat message', {
 						roomId: data.roomId,

@@ -37,7 +37,7 @@ export default class ChatController {
 			throw new HttpErrors.Unauthorized('User does not exist.');
 		}
 		console.log('wants to join room:',chatroom.roomname);
-		const messages = await ChatController.getAllMessageFromChatRoom(roomId);
+		var messages = await ChatController.getAllMessageFromChatRoom(roomId);
 		return messages;
 	}
 
@@ -82,6 +82,7 @@ export default class ChatController {
 		const chatmessage = new ChatMessage({
 			chatroomId: new mongoose.Types.ObjectId(roomId),
 			userId: new mongoose.Types.ObjectId(userId),
+			username: user.username,
 			message: message,
 			timestamp: timestamp
 		});

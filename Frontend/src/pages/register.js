@@ -86,7 +86,7 @@ export default () => {
                 "userImage" : userImage
             }
             axios.post("http://localhost:8080/register",payload).then(res => {
-                        console.log(res)
+                        // console.log(res)
                         //check res logic                    
                         window.location.assign('/')
                     })

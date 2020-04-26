@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useQueryParam, StringParam, useEffect } from 'react';
 import styled from 'styled-components';
 import { SendRounded, ImageOutlined, LocationOnOutlined, ArrowBackIosRounded, CallRounded } from '@material-ui/icons';
-// import socketIOClient from 'socket.io-client';
-// import axios from 'axios';
+import axios from 'axios';
+
+const io = require('socket.io-client');
+const socket = io('http://localhost:8080', { transports: ['websocket'] });
+
 
 const Chat = styled.div`
     padding: 0 32px;
@@ -94,6 +97,7 @@ const ChatText = styled.div`
         margin-left: 16px;
     }
     .send-btn {
+        cursor: pointer;
         background: linear-gradient(135deg, rgba(227,50,81,1) 35%, rgba(245,88,105,1) 100%);
         border-radius: 25px;
         padding: 12px 16px;
@@ -129,17 +133,37 @@ const MessageCard = ({ userImage, username, message, messageTime, isMyMessage })
     )
 }
 
-export default () => {
+export default ({ match }) => {
     const [chatText, setChatText] = useState('')
-    // const endpoint = "http://localhost:8080";
-    // const [messages, setMessages] = useState([])
-    // const [user, setUser] = useState('')
+    const [messages, setMessages] = useState([])
+    const endpoint = "http://localhost:8080";
+    const [user, setUser] = useState('')
+    useEffect(() => {
+        // console.log(match.params.id)
+        axios.get(endpoint + '/whoami', { withCredentials: true }).then(res => {
+            //console.log(res.data)
+            setUser(res.data._id)
+            socket.emit('join room', {
+                "userId": res.data._id,
+                "roomId": match.params.id
+            })
+            socket.on('previous message', (data) => {
+                //console.log("prev chat")
+                //console.log(data)
+                setMessages(data)
+            })
+        })
+
+    });
     return (
         <Chat>
             <Navbar>
                 <ArrowBackIosRounded onClick={() => {
                     //close socket
-
+                    socket.emit('leave room', {
+                        "userId": user,
+                        "roomId": match.params.id
+                    })
                     //back to group
                     window.location.assign("/group")
                 }} />
@@ -149,29 +173,15 @@ export default () => {
                 <CallRounded />
             </Navbar>
             <br /><br />
-            <MessageCard
-                userImage={'/man.png'}
-                username={'Daidew'}
-                message={'Hi, John Doe'}
-                messageTime={'12.15'}
-                isMyMessage={false}
-            />
-
-            <MessageCard
-                userImage={'/dummy.jpg'}
-                username={'Bankbiz'}
-                message={'Hi, Bruno Mars'}
-                messageTime={'14.15'}
-                isMyMessage={true}
-            />
-
-            <MessageCard
-                userImage={'/dummy.jpg'}
-                username={'Nai_Two'}
-                message={'Hi, John Doe'}
-                messageTime={'12.25'}
-                isMyMessage={false}
-            />
+            { messages.map(message => {
+                return <MessageCard
+                    userImage={'/man.png'}
+                    username={message.username}
+                    message={message.message}
+                    messageTime={'12.15'}
+                    isMyMessage={message.userId === user}
+                />
+            })}
 
             <ChatText>
                 <input
@@ -182,7 +192,17 @@ export default () => {
                 />
                 <ImageOutlined style={{ color: '#ffffff82' }} />
                 <LocationOnOutlined style={{ color: '#ffffff82' }} />
-                <SendRounded className="send-btn" />
+                <SendRounded className="send-btn" onClick={() => {
+                    socket.emit('chat message', {
+                        "userId": user,
+                        "roomId": match.params.id,
+                        "message": chatText
+                    })
+                    socket.emit('join room', {
+                        "userId": user,
+                        "roomId": match.params.id
+                    })
+                }} />
             </ChatText>
         </Chat>
     )

@@ -30,7 +30,7 @@ export default () => {
           <Route path='/' exact component={Login} />
           <Route path='/register' exact component={Register} />
           <Route path='/group' exact component={Group} />
-          <Route path='/chat' exact component={Chat} />
+          <Route path='/chat/:id' exact component={Chat} />
         </Router>
       </ThemeProvider>
     </div>
