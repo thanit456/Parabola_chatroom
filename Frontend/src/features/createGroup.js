@@ -33,6 +33,7 @@ const Popup = styled.div`
     border-radius: 24px;
     background-color: #22222A;
     position: absolute;
+    z-index: 99;
     width: 380px;
     height: 300px;
     left: 50%;
@@ -80,7 +81,7 @@ export default (props) => {
     }, [PopupRef]);
 
     return (
-        <Pulse>
+        // <Pulse>
             <Popup ref={PopupRef}>
                 <div className="create-group-heading">
                     Create Group
@@ -125,6 +126,6 @@ export default (props) => {
                     Create Group
             </div>
             </Popup>
-        </Pulse>
+        // </Pulse>
     )
 }
