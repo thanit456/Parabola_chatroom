@@ -196,11 +196,14 @@ export default ({ match }) => {
             <br /><br />
             <SimpleBar style={{ maxHeight: 725 }}>
                 {messages.map(message => {
+                    var date = new Date(message.timestamp)
+                    date = date.getHours()+'.'+date.getMinutes()
+                    //console.log(date)
                     return <MessageCard
                         userImage={'/man.png'}
                         username={message.username}
                         message={message.message}
-                        messageTime={'12.15'}
+                        messageTime={date}
                         isMyMessage={message.userId === user}
                     />
                 })}
